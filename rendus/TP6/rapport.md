@@ -220,4 +220,4 @@ ok: [localhost] => { "msg": "Dysfunctional services: redis" }
 | Ansible absent | `ansible-playbook not found` | Ansible requis pour exécuter le playbook | `brew install ansible` | [Ansible](https://docs.ansible.com/) |
 
 ### Finalité
-**Objectif rempli.** Les health checks (health, readiness, liveness) sont implémentés et testés via le mock. Le bonus (services dysfonctionnels) est opérationnel. Documentation ARM Mac dans `README-ARM-MAC.md`.
+Les health checks (health, readiness, liveness) sont implémentés et testés via le mock. Le bonus (services dysfonctionnels) est opérationnel. Documentation ARM Mac dans `README-ARM-MAC.md`.
