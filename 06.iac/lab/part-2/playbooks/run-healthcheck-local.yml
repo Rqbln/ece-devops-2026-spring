@@ -1,0 +1,9 @@
+---
+# Run healthchecks against localhost:8080 (mock GitLab or Docker GitLab).
+# Use when testing on ARM Mac without Vagrant VM.
+- hosts: localhost
+  connection: local
+  become: false
+  roles:
+    - role: gitlab/healthchecks
+      tags: check
