@@ -1,36 +1,49 @@
-## TP X – Titre du lab
+# TP X – Titre du lab
 
-### Objectif du lab
+Pour chaque question (et sous-partie), suivre la structure ci-dessous.
 
-- Décrire clairement l’objectif principal du lab.
-- Expliquer ce que l’on doit avoir mis en place ou compris à la fin.
+---
+
+## Question 1. [Titre de la question]
+
+### Objectif
+Ce que la question demande d’accomplir.
+
+### Action réalisée
+Décrire ce qui a été fait (étapes, modifications de fichiers, etc.).
+
+### Input (commande)
+```bash
+commande exécutée
+```
+
+### Output (résultat)
+```
+sortie du terminal ou résultat observé
+```
+
+### Problème rencontré (si applicable)
+Message d’erreur, analyse, résolution.
+
+---
+
+## Question 2. [Titre]
+*Même structure : Objectif, Action réalisée, Input, Output, Problème*
+
+---
+
+## Synthèse
 
 ### Application possible dans le monde réel
+Contextes où ces compétences sont utilisées.
 
-- Expliquer dans quels contextes réels ce que vous avez fait dans le lab est utilisé.
-- Faire le lien avec un cas d’usage concret (projet web, infra, CI/CD, monitoring, etc.).
+### Étape dans le cycle DevOps ? Justification
+Phase(s) du cycle concernée(s) et justification.
 
-### Étape dans le cycle DevOps – Justification
+### Problèmes rencontrés (tableau récapitulatif)
+| Problème | Message / symptôme | Analyse | Résolution | Ressources |
+|----------|--------------------|---------|------------|------------|
+| … | … | … | … | … |
 
-- Préciser à quelle ou quelles étapes du cycle DevOps ce lab correspond (Plan, Code, Build, Test, Release, Deploy, Operate, Monitor…).
-- Justifier en quelques phrases : pourquoi ce lab appartient à cette étape ? Quel est son rôle dans une chaîne DevOps complète ?
-
-### Problèmes rencontrés et résolution
-
-Décrire chaque problème sous forme de tableau (vous pouvez copier‑coller celui‑ci pour chaque TP) :
-
-| Problème | Message / symptôme | Analyse | Résolution | Ressources (liens) |
-|----------|--------------------|---------|-----------|---------------------|
-| Exemple : Service Redis indisponible | `Erreur / message ici` | Ce qui se passe vraiment, hypothèses testées… | Comment le problème a été corrigé (commande, config, code) | Liens vers la doc, tutos, issues GitHub, etc. |
-
-Pour chaque problème réel rencontré :
-- Reprendre le message d’erreur exact (copier/coller).
-- Décrire le raisonnement que vous avez suivi.
-- Lister les liens que vous avez consultés (docs officielles, StackOverflow, articles, etc.).
-
-### Finalité du lab
-
-- Dire si l’objectif du lab est **atteint** ou non (et pourquoi).
-- Si oui : ce qui prouve que l’objectif est rempli (tests verts, déploiement en ligne, capture d’écran, etc.).
-- Si non : expliquer ce qui manque, ce qui bloque, et ce que vous feriez ensuite pour terminer.
-
+### Finalité
+L’objectif du lab est-il rempli ? Preuves.

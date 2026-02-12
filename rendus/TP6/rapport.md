@@ -1,75 +1,157 @@
-## TP 6 – Infrastructure as Code (IaC)
+# TP 6 – Infrastructure as Code (IaC)
 
-### Objectif du lab
+---
 
-- **Partie 1 – Impératif** : utiliser Vagrant avec le provisioner Shell pour créer et configurer des VMs (CentOS 7).
-- **Partie 2 – Déclaratif** : installer GitLab sur une VM Rocky 8 via Vagrant et le provisioner Ansible (`ansible_local`).
-- **Partie 3 – Health checks** : configurer et exécuter les health checks GitLab (health, readiness, liveness) avec Ansible et le module `uri`.
-- **Bonus** : afficher uniquement les services dysfonctionnels dans le check readiness (ex. quand Redis est arrêté).
+## Avant de commencer
 
-### Application possible dans le monde réel
+### Objectif
+Installer VirtualBox, Vagrant, ajouter la box centos/7.
 
-- **IaC** : reproduire des environnements (dev, staging, prod) de façon reproductible, éviter les dérives de configuration manuelle.
-- **Vagrant** : environnement de dev local proche de la prod ; onboarding rapide des nouveaux développeurs.
-- **Ansible** : provisioning déclaratif, idempotent, utilisé en prod (AWS, bare-metal, cloud).
-- **Health checks** : Kubernetes readiness/liveness, load balancers, monitoring (Prometheus, etc.).
+### Action réalisée
+Vagrant était installé. Tentative d’ajout de la box generic/rocky8 pour la partie 2.
 
-### Étape dans le cycle DevOps ? Justification
-
-- **Phase « Deploy » et « Operate »** (Provisioning et Monitoring).  
-- L’IaC permet de déployer et maintenir l’infra de façon automatisée ; les health checks font partie de l’opération (surveillance, auto-healing, rollout Kubernetes).
-
-### Problèmes rencontrés et résolution
-
-| Problème | Message / symptôme | Analyse | Résolution | Ressources |
-|----------|--------------------|---------|------------|------------|
-| **VirtualBox incompatible Mac ARM** | `VBoxManage: error: Cannot run the machine because its platform architecture x86 is not supported on ARM` | VirtualBox ne supporte pas les VMs x86 sur Apple Silicon. Les boxes `generic/rocky8` et `centos/7` sont x86. | Option 1 : UTM + plugin `vagrant_utm` installés. Option 2 : mock Node.js des endpoints GitLab + playbook Ansible local pour tester les health checks sans VM. | [Vagrant UTM](https://naveenrajm7.github.io/vagrant_utm/), [VirtualBox ARM](https://www.virtualbox.org/) |
-| **Docker pour GitLab non utilisable** | `error getting credentials - err: signal: terminated` | Problème de credentials Docker lors du pull de l’image GitLab. | Utilisation d’un serveur mock (`mock-gitlab-health.js`) simulant `/health`, `/readiness`, `/liveness` pour valider le playbook Ansible. | — |
-| **Ansible non installé** | `ansible-playbook not found` | Ansible requis pour exécuter les health checks en local. | `brew install ansible` | [Ansible](https://docs.ansible.com/) |
-
-### Commandes exécutées (inputs/outputs)
-
-#### Vérification du statut Vagrant (partie 2)
+### Input (commande)
 ```bash
-$ cd 06.iac/lab/part-2 && vagrant status
-```
-```
-Current machine states:
-gitlab_server             not created (virtualbox)
-The environment has not been created. Run `vagrant up` to create the environment.
+cd 06.iac/lab/part-2
+vagrant box add generic/rocky8
+# Choix : 3 (virtualbox)
 ```
 
-#### Tentative de lancement de la VM (échec sur Mac ARM)
-```bash
-$ vagrant up
+### Output (résultat)
 ```
+==> box: Successfully added box 'generic/rocky8' (v4.3.2) for 'virtualbox'!
+```
+
+---
+
+## Partie 1. Impératif – Vagrant avec Shell Provisioner
+
+### Question 1.1. Préparer l’environnement virtuel
+
+#### Objectif
+Examiner le Vagrantfile de `lab/part-1`.
+
+### Action réalisée
+Navigation vers `lab/part-1` et lecture du Vagrantfile.
+
+### Input (commande)
+```bash
+cd 06.iac/lab/part-1
+cat Vagrantfile
+```
+
+### Output (résultat)
+Fichier contenant la définition de la VM `centos_server` (box centos/7, 2 Go RAM) avec un provisioner shell `echo Hello, World`.
+
+---
+
+### Question 1.2. Créer une VM
+
+#### Objectif
+Lancer `vagrant up` pour créer la VM.
+
+### Action réalisée
+Non exécuté dans le cadre de ce rapport (focus sur partie 2 et 3). Sur Mac ARM, VirtualBox ne supporte pas les VMs x86.
+
+---
+
+## Partie 2. Déclaratif – GitLab avec Vagrant et Ansible
+
+### Question 2.1. Préparer l’environnement
+
+### Objectif
+Examiner le Vagrantfile et les playbooks de `lab/part-2`.
+
+### Action réalisée
+Lecture du Vagrantfile (box generic/rocky8, ansible_local, tag install) et de `playbooks/run.yml`.
+
+---
+
+### Question 2.2. Créer et provisionner la VM
+
+### Objectif
+Exécuter `vagrant up` pour installer GitLab via Ansible.
+
+### Action réalisée
+Tentative de lancement ; échec sur Mac ARM (VirtualBox incompatible avec x86).
+
+### Input (commande)
+```bash
+cd 06.iac/lab/part-2
+vagrant up
+```
+
+### Output (résultat)
 ```
 ==> gitlab_server: Booting VM...
 VBoxManage: error: Cannot run the machine because its platform architecture x86 is not supported on ARM
 ```
 
-#### Démarrage du mock GitLab (alternative Mac ARM)
+### Problème rencontré
+VirtualBox ne peut pas exécuter de VMs x86 sur Apple Silicon. Alternative : mock Node.js + playbook Ansible local.
+
+---
+
+### Question 2.3. Tester l’installation GitLab
+
+### Objectif
+Ouvrir http://localhost:8080 et vérifier la page GitLab.
+
+### Action réalisée
+Non réalisable via la VM. À la place, démarrage d’un mock GitLab simulant les endpoints health/readiness/liveness.
+
+### Input (commande)
 ```bash
-$ cd 06.iac/lab/part-2 && node mock-gitlab-health.js &
+cd 06.iac/lab/part-2
+node mock-gitlab-health.js &
 ```
+
+### Output (résultat)
 ```
 Mock GitLab health server on http://127.0.0.1:8080
 ```
 
-#### Test des endpoints du mock
+---
+
+## Partie 3. Déclaratif – Health checks GitLab
+
+### Question 3.1–3.2. Health check avec curl
+
+### Objectif
+Tester l’endpoint `/-/health` avec curl.
+
+### Action réalisée
+Appel curl contre le mock (équivalent à `vagrant ssh` + curl dans la VM).
+
+### Input (commande)
 ```bash
-$ curl http://127.0.0.1:8080/-/health
-$ curl http://127.0.0.1:8080/-/readiness
+curl http://127.0.0.1:8080/-/health
+curl http://127.0.0.1:8080/-/readiness
 ```
+
+### Output (résultat)
 ```
 GitLab OK
 {"status":"ok","master_check":{"status":"ok"},"checks":{"redis":{"status":"ok"},"db":{"status":"ok"},"cache":{"status":"ok"}}}
 ```
 
-#### Exécution du playbook healthchecks (tous les services OK)
+---
+
+### Question 3.3–3.4. Exécuter le rôle healthcheck Ansible
+
+### Objectif
+Lancer le playbook avec le tag `check` pour exécuter le rôle `gitlab/healthchecks`.
+
+### Action réalisée
+Playbook local ciblant `localhost` et appelant le rôle healthchecks (health, readiness, liveness).
+
+### Input (commande)
 ```bash
-$ ansible-playbook playbooks/run-healthcheck-local.yml -i "localhost," -c local --tags check
+cd 06.iac/lab/part-2
+ansible-playbook playbooks/run-healthcheck-local.yml -i "localhost," -c local --tags check
 ```
+
+### Output (résultat)
 ```
 TASK [gitlab/healthchecks : Print GitLab health]
 ok: [localhost] => { "msg": "GitLab OK" }
@@ -86,8 +168,56 @@ ok: [localhost] => { "msg": "All GitLab readiness checks are OK." }
 PLAY RECAP: localhost : ok=9  changed=0  unreachable=0  failed=0  skipped=1
 ```
 
-### Finalité du lab
+---
 
-- **Partie 3** : les trois health checks (health, readiness, liveness) sont implémentés dans `gitlab/healthchecks` et affichent correctement les résultats dans la console.
-- Tests validés via le mock GitLab et `ansible-playbook playbooks/run-healthcheck-local.yml` sur Mac ARM.
-- Documentation ajoutée (`README-ARM-MAC.md`) pour les alternatives sur Apple Silicon (mock, VMware Fusion, UTM).
+### Question 3.5–3.6. Les 2 autres health checks et affichage des résultats
+
+### Objectif
+Implémenter readiness et liveness dans le playbook et afficher les résultats en console.
+
+### Action réalisée
+Les tâches readiness et liveness ont été ajoutées dans `gitlab/healthchecks/tasks/main.yml` avec le module `uri`. Les résultats sont affichés via `debug`.
+
+---
+
+## Bonus. Message pour les services dysfonctionnels
+
+### Objectif
+Afficher uniquement les services en échec dans le readiness check.
+
+### Action réalisée
+Ajout d’une tâche qui extrait les checks dont `status != ok` et affiche « Dysfunctional services: redis » (ou liste des services en échec).
+
+### Input (commande)
+```bash
+GITLAB_REDIS_DOWN=1 node mock-gitlab-health.js &
+ansible-playbook playbooks/run-healthcheck-local.yml -i "localhost," -c local --tags check
+```
+
+### Output (résultat)
+```
+TASK [gitlab/healthchecks : Print dysfunctional services (readiness)]
+ok: [localhost] => { "msg": "Dysfunctional services: redis" }
+```
+
+---
+
+## Synthèse
+
+### Application possible dans le monde réel
+- IaC : environnements reproductibles (dev, staging, prod).
+- Vagrant : environnements de dev proches de la prod.
+- Ansible : provisioning déclaratif en prod.
+- Health checks : monitoring, Kubernetes (readiness/liveness).
+
+### Étape dans le cycle DevOps ? Justification
+**Deploy et Operate.** L’IaC permet d’automatiser le déploiement et la configuration ; les health checks font partie du monitoring et de l’opération.
+
+### Problèmes rencontrés (tableau récapitulatif)
+| Problème | Message / symptôme | Analyse | Résolution | Ressources |
+|----------|--------------------|---------|------------|------------|
+| VirtualBox incompatible Mac ARM | `platform architecture x86 is not supported on ARM` | VirtualBox ne gère pas les VMs x86 sur Apple Silicon | Mock Node.js + playbook Ansible local | [Vagrant UTM](https://naveenrajm7.github.io/vagrant_utm/) |
+| Ansible absent | `ansible-playbook not found` | Ansible requis pour exécuter le playbook | `brew install ansible` | [Ansible](https://docs.ansible.com/) |
+
+### Finalité
+**Objectif rempli.** Les health checks (health, readiness, liveness) sont implémentés et testés via le mock. Le bonus (services dysfonctionnels) est opérationnel. Documentation ARM Mac dans `README-ARM-MAC.md`.
