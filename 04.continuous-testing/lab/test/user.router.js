@@ -59,7 +59,48 @@ describe('User REST API', () => {
     })
   })
 
-  // describe('GET /user', ()=> {
-  //   // TODO Create test for the get method
-  // })
+  describe('GET /user', ()=> {
+    // TODO Create test for the get method
+
+    it('successfully get user', (done) => {
+      const user = {
+        username: 'sergkudinov',
+        firstname: 'Sergei',
+        lastname: 'Kudinov'
+      }
+      // pre-populate DB directly to isolate from POST behaviour
+      db.hmset(user.username, { firstname: user.firstname, lastname: user.lastname }, (err) => {
+        if (err) throw err
+        chai.request(app)
+          .get(`/user/${user.username}`)
+          .then((res) => {
+            chai.expect(res).to.have.status(200)
+            chai.expect(res.body.status).to.equal('success')
+            chai.expect(res.body.user.username).to.equal(user.username)
+            chai.expect(res.body.user.firstname).to.equal(user.firstname)
+            chai.expect(res.body.user.lastname).to.equal(user.lastname)
+            chai.expect(res).to.be.json
+            done()
+          })
+          .catch((err) => {
+            throw err
+          })
+      })
+    })
+
+    it('cannot get a user when it does not exist', (done) => {
+      const username = 'unknown'
+      chai.request(app)
+        .get(`/user/${username}`)
+        .then((res) => {
+          chai.expect(res).to.have.status(404)
+          chai.expect(res.body.status).to.equal('error')
+          chai.expect(res).to.be.json
+          done()
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+  })
 })
