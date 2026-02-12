@@ -25,4 +25,61 @@
   debug:
     msg: "{{ gitlab_health.content }}"
 
-# Run the 2 other kind of health checks below
+###########################################################
+# Readiness check
+###########################################################
+
+- name: Check GitLab readiness
+  uri:
+    url: http://127.0.0.1:8080/-/readiness
+    return_content: yes
+  register: gitlab_readiness
+
+- name: Print GitLab readiness
+  debug:
+    msg: "{{ gitlab_readiness.content }}"
+
+###########################################################
+# Liveness check
+###########################################################
+
+- name: Check GitLab liveness
+  uri:
+    url: http://127.0.0.1:8080/-/liveness
+    return_content: yes
+  register: gitlab_liveness
+
+- name: Print GitLab liveness
+  debug:
+    msg: "{{ gitlab_liveness.content }}"
+
+###########################################################
+# Bonus – print only dysfunctional services (readiness)
+###########################################################
+
+- name: Extract dysfunctional services from readiness JSON
+  set_fact:
+    gitlab_readiness_failed_services: >-
+      {{
+        gitlab_readiness.json.checks
+        | dict2items
+        | selectattr('value.status', 'ne', 'ok')
+        | map(attribute='key')
+        | list
+      }}
+  when: gitlab_readiness is defined and gitlab_readiness.json is defined
+
+- name: Print dysfunctional services (readiness)
+  debug:
+    msg: "Dysfunctional services: {{ gitlab_readiness_failed_services | join(', ') }}"
+  when:
+    - gitlab_readiness_failed_services is defined
+    - gitlab_readiness_failed_services | length > 0
+
+- name: Print message when all readiness checks are OK
+  debug:
+    msg: "All GitLab readiness checks are OK."
+  when:
+    - gitlab_readiness_failed_services is defined
+    - gitlab_readiness_failed_services | length == 0
+
