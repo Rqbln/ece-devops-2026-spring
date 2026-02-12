@@ -1,11 +1,16 @@
-version: '3'
 services:
   redis:
     image: redis
+    volumes:
+      - redis_data:/data
   web:
-    # COMPLETE HERE
     build: .
+    depends_on:
+      - redis
     ports:
       - "5000:8080"
     environment:
-      # ...
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+volumes:
+  redis_data: {}
