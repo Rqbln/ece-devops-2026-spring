@@ -86,21 +86,8 @@ ok: [localhost] => { "msg": "All GitLab readiness checks are OK." }
 PLAY RECAP: localhost : ok=9  changed=0  unreachable=0  failed=0  skipped=1
 ```
 
-#### Bonus : test avec Redis simulé en panne
-```bash
-$ GITLAB_REDIS_DOWN=1 node mock-gitlab-health.js &
-$ ansible-playbook playbooks/run-healthcheck-local.yml -i "localhost," -c local --tags check
-```
-```
-TASK [gitlab/healthchecks : Print dysfunctional services (readiness)]
-ok: [localhost] => { "msg": "Dysfunctional services: redis" }
-```
-
 ### Finalité du lab
 
-**Objectif rempli.**
-
 - **Partie 3** : les trois health checks (health, readiness, liveness) sont implémentés dans `gitlab/healthchecks` et affichent correctement les résultats dans la console.
-- **Bonus** : extraction des services dysfonctionnels via `gitlab_readiness.json.checks` ; affichage de « Dysfunctional services: redis » lorsque Redis est en échec, ou « All GitLab readiness checks are OK. » sinon.
 - Tests validés via le mock GitLab et `ansible-playbook playbooks/run-healthcheck-local.yml` sur Mac ARM.
 - Documentation ajoutée (`README-ARM-MAC.md`) pour les alternatives sur Apple Silicon (mock, VMware Fusion, UTM).
