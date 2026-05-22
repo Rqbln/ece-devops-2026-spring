@@ -1,7 +1,8 @@
-# Projet DevOps — CD Docker Hub + déploiement Render
-# Secrets : DOCKERHUB_USERNAME, DOCKERHUB_TOKEN (optionnel), RENDER_SERVICE_ID, RENDER_API_KEY
+# Projet DevOps — déploiement Render (API) + auto-deploy Render via lien GitHub
+# Secrets requis : RENDER_SERVICE_ID, RENDER_API_KEY
+# Image Docker Hub : déjà poussée (romainmlt/devops-cv-webapp) — job Hub optionnel via workflow_dispatch
 
-name: Projet — CD Docker & Render
+name: Projet — CD Render
 
 on:
   push:
@@ -16,34 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to Render
+      - name: Trigger Render deploy
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Skip Docker Hub push (token absent)
-        if: ${{ secrets.DOCKERHUB_TOKEN == '' }}
-        run: echo "DOCKERHUB_TOKEN non configuré — image déjà sur Hub via push local."
-
-      - name: Log in to Docker Hub
-        if: ${{ secrets.DOCKERHUB_TOKEN != '' }}
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push image
-        if: ${{ secrets.DOCKERHUB_TOKEN != '' }}
-        uses: docker/build-push-action@v6
-        with:
-          context: rendus/projet/webapp
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-cv-webapp:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/devops-cv-webapp:${{ github.sha }}
