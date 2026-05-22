@@ -1,6 +1,6 @@
-# Projet DevOps — CD Docker Hub + Render (optionnel)
-# Secrets GitHub : DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, RENDER_SERVICE_ID, RENDER_API_KEY
-# Sans secrets Docker Hub : le job build échoue au login — configurer avant push sur main.
+# Projet DevOps — CD Docker Hub + déploiement Render
+# Secrets : DOCKERHUB_USERNAME, DOCKERHUB_TOKEN (optionnel), RENDER_SERVICE_ID, RENDER_API_KEY
+# Render est aussi relié au repo GitHub (auto-deploy au push sur main).
 
 name: Projet — CD Docker & Render
 
@@ -12,9 +12,20 @@ on:
       - '.github/workflows/projet-cd.yml'
 
 jobs:
+  deploy-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+
   docker:
     runs-on: ubuntu-latest
-
+    if: ${{ secrets.DOCKERHUB_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,20 +43,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-cv-webapp:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-cv-webapp:${{ github.sha }}
-
-  deploy-render:
-    runs-on: ubuntu-latest
-    needs: docker
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Deploy to Render
-        if: ${{ secrets.RENDER_SERVICE_ID != '' && secrets.RENDER_API_KEY != '' }}
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
-
-      - name: Skip Render (secrets non configurés)
-        if: ${{ secrets.RENDER_SERVICE_ID == '' || secrets.RENDER_API_KEY == '' }}
-        run: echo "RENDER_* non configurés — déploiement Render ignoré (homepage locale / Docker suffisent)."

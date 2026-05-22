@@ -17,7 +17,7 @@ Application web Node.js complète : CV en ligne, compteur Redis, API REST docume
 | Docker Hub | ✅ `romainmlt/devops-cv-webapp:latest` | — |
 | Kubernetes Minikube | ✅ cluster + pods Running | capture PNG optionnelle |
 | IaC Vagrant | ⚠️ code OK, VM non exécutée | VirtualBox / Secure Boot — voir § IaC |
-| Render live | À vérifier | secrets `RENDER_*` + deploy |
+| Render live | Déploy via push `main` + secrets `RENDER_*` | https://devops-cv-webapp.onrender.com |
 | CI GitHub Actions | Après push | workflows `Projet — *` |
 
 Credentials locaux : copier `.env.example` → `.env` (ignoré par git). Sync secrets : `bash scripts/sync-github-secrets.sh` (nécessite `gh`).
@@ -101,7 +101,9 @@ deployment.apps/cv-webapp   2/2     2            2
 deployment.apps/redis       1/1     1            1
 ```
 
-Accès : http://localhost:30080 ou `minikube service cv-webapp-service --url`
+Accès : `minikube service cv-webapp-service --url` (souvent `http://192.168.49.2:30080`)
+
+![CV sur Kubernetes](screenshots/k8s-cv.png)
 
 Health K8s : [`screenshots/terminal/k8s-health.json`](screenshots/terminal/k8s-health.json)
 

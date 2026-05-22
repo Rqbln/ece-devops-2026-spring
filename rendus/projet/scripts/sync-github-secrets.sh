@@ -20,8 +20,9 @@ set -a
 source "$ENV_FILE"
 set +a
 
-repo=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null) || {
-  echo "Exécuter depuis un clone git avec gh configuré."
+REPO_TARGET="${GITHUB_REPO:-Rqbln/ece-devops-2026-spring}"
+repo=$(gh repo view "$REPO_TARGET" --json nameWithOwner -q .nameWithOwner 2>/dev/null) || {
+  echo "Dépôt introuvable : $REPO_TARGET (gh auth / droits ?)"
   exit 1
 }
 
