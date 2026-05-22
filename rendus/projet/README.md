@@ -66,6 +66,12 @@ Credentials locaux : copier `.env.example` → `.env` (ignoré par git). Sync se
 
 ![CV local — Romain Martin](screenshots/cv-local.png)
 
+### Déploiement Render (live)
+
+![Render — deploy live](screenshots/render.png)
+
+URL : https://ece-devops-2026-spring.onrender.com
+
 ### Pipeline CI (GitHub Actions)
 
 ![CI réussie](screenshots/ci-success.png)

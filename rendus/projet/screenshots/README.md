@@ -16,10 +16,10 @@
 - [ ] `vagrant-health.png` — `curl localhost:3000/health` depuis l’hôte
 - [x] Sortie terminal `kubectl-get-all.txt` — pods Running
 - [ ] `kubectl-get-all.png` — capture écran optionnelle (même contenu que le .txt)
-- [ ] `k8s-cv.png` — navigateur http://localhost:30080 (health OK — voir `k8s-health.json`)
-- [ ] `github-actions-projet.png` — onglet Actions, workflows `Projet — CI` / `CD` verts
+- [x] `k8s-cv.png` — application sur Minikube (NodePort / minikube service)
+- [ ] `github-actions-projet.png` — onglet Actions, `Projet — CI CV Webapp` + `Projet — CD Render` verts
 - [ ] `docker-hub.png` — page repository Docker Hub avec tag `latest`
-- [ ] `render-home.png` — homepage Render (même si Redis cloud non payé)
+- [x] `render.png` — dashboard Render (deploy live)
 
 Générer les sorties terminal :
 
