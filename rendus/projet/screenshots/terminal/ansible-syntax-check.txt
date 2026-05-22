@@ -1,0 +1,16 @@
+# IaC — validation Ansible (sans VM VirtualBox)
+
+Contexte : VirtualBox (vboxdrv) non fonctionnel sur la machine de rendu (Secure Boot / modules noyau).
+Le code IaC reste livré et relançable où VirtualBox fonctionne : iac/Vagrantfile + playbooks/.
+
+Vérification structurelle des playbooks :
+- iac/playbooks/run.yml
+- iac/playbooks/roles/app/install/tasks/main.yml (Node 18, Redis, systemd cv-webapp)
+- iac/playbooks/roles/app/healthchecks/tasks/main.yml (uri /health)
+
+Pour exécuter sur une VM :
+  cd iac && vagrant up && curl http://localhost:3000/health
+
+Pour installer ansible-playbook localement :
+  sudo apt install -y ansible-core
+  ansible-playbook playbooks/run.yml --syntax-check

@@ -1,0 +1,18 @@
+NAME                            READY   STATUS    RESTARTS      AGE
+pod/cv-webapp-5b88bf69b-64fpl   1/1     Running   1 (25s ago)   115s
+pod/cv-webapp-5b88bf69b-85bbp   1/1     Running   1 (25s ago)   115s
+pod/redis-c46d5dffc-4d54s       1/1     Running   0             116s
+
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/cv-webapp-service   NodePort    10.96.138.59     <none>        3000:30080/TCP   115s
+service/kubernetes          ClusterIP   10.96.0.1        <none>        443/TCP          2m23s
+service/redis-service       ClusterIP   10.107.252.218   <none>        6379/TCP         116s
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/cv-webapp   2/2     2            2           116s
+deployment.apps/redis       1/1     1            1           116s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/cv-webapp-5b88bf69b   2         2         2       116s
+replicaset.apps/redis-c46d5dffc       1         1         1       116s
+http://192.168.49.2:30080

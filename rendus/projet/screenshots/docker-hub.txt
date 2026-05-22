@@ -1,0 +1,10 @@
+# Docker Hub — à compléter après push réel
+
+Repository (cible): https://hub.docker.com/r/rqbln/devops-cv-webapp
+Image locale (OK): rqbln/devops-cv-webapp:latest
+
+Commandes:
+  cp .env.example .env    # DOCKERHUB_TOKEN=
+  make docker-push
+
+Capture attendue: screenshots/docker-hub.png (page Hub avec tag latest)

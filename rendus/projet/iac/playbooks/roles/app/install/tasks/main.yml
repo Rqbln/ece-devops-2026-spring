@@ -1,0 +1,57 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install system packages
+  apt:
+    name:
+      - curl
+      - git
+      - redis-server
+      - ca-certificates
+      - gnupg
+    state: present
+
+- name: Enable and start Redis
+  service:
+    name: redis-server
+    state: started
+    enabled: yes
+
+- name: Install NodeSource setup script
+  get_url:
+    url: https://deb.nodesource.com/setup_18.x
+    dest: /tmp/nodesource_setup.sh
+    mode: '0755'
+
+- name: Run NodeSource setup
+  command: /tmp/nodesource_setup.sh
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Install npm dependencies
+  npm:
+    path: /vagrant/webapp
+    state: present
+    production: no
+
+- name: Deploy systemd unit for CV app
+  template:
+    src: cv-webapp.service.j2
+    dest: /etc/systemd/system/cv-webapp.service
+    mode: '0644'
+
+- name: Reload systemd and start CV app
+  systemd:
+    name: cv-webapp
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

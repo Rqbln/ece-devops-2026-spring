@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: devops-cv-webapp
+    runtime: node
+    rootDir: rendus/projet/webapp
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: REDIS_HOST
+        sync: false
+      - key: REDIS_PORT
+        value: 6379

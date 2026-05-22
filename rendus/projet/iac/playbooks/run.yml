@@ -1,0 +1,8 @@
+---
+- hosts: cv_app
+  become: true
+  roles:
+    - role: app/install
+      tags: install
+    - role: app/healthchecks
+      tags: check

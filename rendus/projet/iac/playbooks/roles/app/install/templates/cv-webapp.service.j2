@@ -1,0 +1,17 @@
+[Unit]
+Description=CV DevOps Web Application
+After=network.target redis-server.service
+Requires=redis-server.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/vagrant/webapp
+Environment=PORT=3000
+Environment=REDIS_HOST=127.0.0.1
+Environment=REDIS_PORT=6379
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

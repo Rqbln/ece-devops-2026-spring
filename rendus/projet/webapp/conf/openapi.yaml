@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: DevOps CV API
+  version: 1.0.0
+  description: API du projet DevOps ECE — CV, utilisateurs, commentaires et statistiques
+servers:
+  - url: http://localhost:3000
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Application et Redis OK
+  /api/stats:
+    get:
+      summary: Statistiques globales
+      responses:
+        '200':
+          description: Compteurs Redis
+  /user:
+    post:
+      summary: Créer un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Créé
+    get:
+      summary: Lister les utilisateurs
+      responses:
+        '200':
+          description: Liste
+  /user/{username}:
+    get:
+      summary: Obtenir un utilisateur
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Trouvé
+        '404':
+          description: Introuvable
+    put:
+      summary: Mettre à jour un utilisateur
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Mis à jour
+    delete:
+      summary: Supprimer un utilisateur
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Supprimé
+  /comments:
+    get:
+      summary: Lister les commentaires
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Ajouter un commentaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentInput'
+      responses:
+        '201':
+          description: Créé
+components:
+  schemas:
+    UserInput:
+      type: object
+      required: [username]
+      properties:
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+    CommentInput:
+      type: object
+      required: [author, text]
+      properties:
+        author:
+          type: string
+        text:
+          type: string

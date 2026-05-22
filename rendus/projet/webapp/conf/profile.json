@@ -1,0 +1,54 @@
+{
+  "title": "CV DevOps — Romain Martin",
+  "name": "Romain Martin",
+  "role": "Étudiant Ingénieur — Spécialité DevOps",
+  "email": "romain.martin@ece.fr",
+  "location": "Paris, France",
+  "github": "https://github.com/Rqbln",
+  "linkedin": "https://linkedin.com/in/romain-martin-devops",
+  "summary": "Étudiant à l'ECE Paris, passionné par l'automatisation, les pipelines CI/CD, l'Infrastructure as Code et l'orchestration de conteneurs. Ce projet regroupe une application web, des tests automatisés, du déploiement cloud et Kubernetes.",
+  "skills": [
+    "Node.js",
+    "Express",
+    "Redis",
+    "Docker",
+    "Kubernetes",
+    "Ansible",
+    "Vagrant",
+    "GitHub Actions",
+    "GitLab CI",
+    "Minikube"
+  ],
+  "experiences": [
+    {
+      "title": "Projet DevOps — Application CV",
+      "company": "ECE Paris — Groupe SI03",
+      "period": "2025-2026",
+      "description": "Conception d'une webapp Node.js, pipeline CI/CD, provisioning Vagrant/Ansible, image Docker Hub et déploiement Kubernetes."
+    },
+    {
+      "title": "TP Continuous Testing",
+      "company": "ECE DevOps",
+      "period": "2025",
+      "description": "API REST Redis, tests Mocha/Chai, lint ESLint et intégration continue GitHub Actions."
+    },
+    {
+      "title": "TP Container Orchestration",
+      "company": "ECE DevOps",
+      "period": "2025",
+      "description": "Déploiements et services Kubernetes avec Minikube, probes et NodePort."
+    }
+  ],
+  "education": [
+    {
+      "degree": "Cycle Ingénieur — Informatique",
+      "school": "ECE Paris",
+      "year": "2026"
+    },
+    {
+      "degree": "Certification DevOps (labs)",
+      "school": "ECE — cours DevOps",
+      "year": "2025-2026"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: Projet — Validate Kubernetes manifests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rendus/projet/image/**'
+      - '.github/workflows/projet-k8s-validate.yml'
+  pull_request:
+    paths:
+      - 'rendus/projet/image/**'
+      - '.github/workflows/projet-k8s-validate.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Dry-run manifests
+        run: kubectl apply --dry-run=client -f rendus/projet/image/

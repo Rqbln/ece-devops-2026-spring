@@ -1,0 +1,70 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  161.3kB
+Step 1/10 : FROM node:18-alpine
+18-alpine: Pulling from library/node
+25ff2da83641: Pulling fs layer
+dd71dde834b5: Pulling fs layer
+f18232174bc9: Pulling fs layer
+1e5a4c89cee5: Pulling fs layer
+25ff2da83641: Download complete
+27e1cfd0b5f2: Download complete
+1e5a4c89cee5: Download complete
+f18232174bc9: Download complete
+0758d11b0bb7: Download complete
+f18232174bc9: Pull complete
+dd71dde834b5: Download complete
+25ff2da83641: Pull complete
+1e5a4c89cee5: Pull complete
+dd71dde834b5: Pull complete
+Digest: sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+Status: Downloaded newer image for node:18-alpine
+ ---> 8d6421d663b4
+Step 2/10 : WORKDIR /usr/src/app
+ ---> Running in 5d7c63ce7c8b
+ ---> Removed intermediate container 5d7c63ce7c8b
+ ---> dbeb923a6bd3
+Step 3/10 : COPY package*.json ./
+ ---> 20308d9fd370
+Step 4/10 : RUN npm ci --omit=dev
+ ---> Running in 3a8e276df381
+[91mnpm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[0m[91mnpm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+[0m
+added 90 packages, and audited 91 packages in 2s
+
+17 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[91mnpm notice
+npm notice New major version of npm available! 10.8.2 -> 11.15.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.15.0
+npm notice To update run: npm install -g npm@11.15.0
+npm notice
+[0m ---> Removed intermediate container 3a8e276df381
+ ---> 42186b57a2f1
+Step 5/10 : COPY conf ./conf
+ ---> 3e9946824066
+Step 6/10 : COPY src ./src
+ ---> e2b3a93ec34a
+Step 7/10 : EXPOSE 3000
+ ---> Running in af57847efa58
+ ---> Removed intermediate container af57847efa58
+ ---> c70268bf3079
+Step 8/10 : ENV PORT=3000
+ ---> Running in eae57710b3b9
+ ---> Removed intermediate container eae57710b3b9
+ ---> 7c6888df14b3
+Step 9/10 : ENV REDIS_HOST=redis
+ ---> Running in ba9a22f95e09
+ ---> Removed intermediate container ba9a22f95e09
+ ---> e82261680aee
+Step 10/10 : CMD ["npm", "start"]
+ ---> Running in 9a533d17f1a1
+ ---> Removed intermediate container 9a533d17f1a1
+ ---> b47d2cd4950e
+Successfully built b47d2cd4950e
+Successfully tagged rqbln/devops-cv-webapp:latest

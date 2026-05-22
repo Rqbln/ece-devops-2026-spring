@@ -1,0 +1,30 @@
+{
+  "name": "devops-cv-webapp",
+  "version": "1.0.0",
+  "description": "CV web application with Redis view counter and REST API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "mocha test/*.js"
+  },
+  "author": "Romain",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.21.2",
+    "mixme": "^0.5.4",
+    "redis": "^3.1.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.5.0",
+    "chai-http": "^4.4.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-mocha": "^10.5.0",
+    "mocha": "^10.8.2"
+  },
+  "mocha": {
+    "timeout": 10000
+  }
+}

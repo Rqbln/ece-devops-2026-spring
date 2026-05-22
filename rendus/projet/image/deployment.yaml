@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cv-webapp
+  labels:
+    app: cv-webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cv-webapp
+  template:
+    metadata:
+      labels:
+        app: cv-webapp
+    spec:
+      containers:
+        - name: cv-webapp
+          # Minikube (image locale) : devops-cv-webapp:local + imagePullPolicy: Never
+          # Docker Hub / prod : romainmlt/devops-cv-webapp:latest
+          image: romainmlt/devops-cv-webapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: REDIS_HOST
+              value: redis-service
+            - name: REDIS_PORT
+              value: "6379"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20

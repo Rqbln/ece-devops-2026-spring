@@ -1,0 +1,44 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm.
+
+> devops-cv-webapp@1.0.0 test
+> mocha test/*.js
+
+Server listening on port 3000
+Swagger UI: http://localhost:3000/api-docs
+
+
+  Configure
+    ✔ load default json configuration file
+    ✔ load custom configuration
+
+  Redis
+    ✔ should connect to Redis
+
+  User
+    Create
+      ✔ create a new user
+      ✔ passing wrong user parameters
+      ✔ avoid creating an existing user
+    Get
+      ✔ get a user by username
+      ✔ cannot get a user when it does not exist
+    List / Update / Delete
+      ✔ lists, updates and deletes users
+
+  Application API
+    ✔ GET / displays CV content
+    ✔ GET /health returns ok when redis is connected
+    ✔ POST and GET /comments work
+    ✔ GET /api/stats returns counters
+    ✔ GET /api-docs serves Swagger UI
+    POST /user
+      ✔ create a new user
+      ✔ pass wrong parameters
+    GET /user
+      ✔ successfully get user
+      ✔ cannot get a user when it does not exist
+      ✔ DELETE /user/:username removes user
+
+
+  19 passing (53ms)
+
