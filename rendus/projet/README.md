@@ -17,7 +17,7 @@ Application web Node.js complète : CV en ligne, compteur Redis, API REST docume
 | Docker Hub | ✅ `romainmlt/devops-cv-webapp:latest` | — |
 | Kubernetes Minikube | ✅ cluster + pods Running | capture PNG optionnelle |
 | IaC Vagrant | ⚠️ code OK, VM non exécutée | VirtualBox / Secure Boot — voir § IaC |
-| Render live | Déploy via push `main` + secrets `RENDER_*` | https://devops-cv-webapp.onrender.com |
+| Render live | ✅ déployé (Docker, commit `17249a9`) | https://ece-devops-2026-spring.onrender.com |
 | CI GitHub Actions | Après push | workflows `Projet — *` |
 
 Credentials locaux : copier `.env.example` → `.env` (ignoré par git). Sync secrets : `bash scripts/sync-github-secrets.sh` (nécessite `gh`).
@@ -128,7 +128,7 @@ cd iac && vagrant up && curl http://localhost:3000/health
 | **Dépôt GitHub** | https://github.com/Rqbln/ece-devops-2026-spring | Passer en **privé** avant rendu |
 | **Docker Hub** | https://hub.docker.com/r/romainmlt/devops-cv-webapp | ✅ image poussée |
 | **Image Docker** | `docker pull romainmlt/devops-cv-webapp:latest` | — |
-| **Render** | https://devops-cv-webapp.onrender.com | À activer (`render.yaml`, secrets Render) |
+| **Render** | https://ece-devops-2026-spring.onrender.com | ✅ homepage OK (Redis cloud non configuré → `/health` partiel) |
 | **Swagger (local)** | http://localhost:3000/api-docs | — |
 | **GitHub Actions** | https://github.com/Rqbln/ece-devops-2026-spring/actions | Workflows `Projet — *` |
 
