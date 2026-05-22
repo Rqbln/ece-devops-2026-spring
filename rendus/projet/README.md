@@ -72,11 +72,11 @@ Credentials locaux : copier `.env.example` → `.env` (ignoré par git). Sync se
 
 URL : https://ece-devops-2026-spring.onrender.com
 
-### Pipeline CI (GitHub Actions)
+### GitHub Actions (CI/CD projet)
 
-![CI réussie](screenshots/ci-success.png)
+![GitHub Actions — workflows Projet](screenshots/github_action.png)
 
-> Refaire cette capture après push : workflows **`Projet — CI CV Webapp`** (racine `.github/workflows/projet-ci.yml`).
+Workflows à la racine : `projet-ci.yml`, `projet-cd.yml`, `projet-k8s-validate.yml`.
 
 ### Health check (capture terminal)
 

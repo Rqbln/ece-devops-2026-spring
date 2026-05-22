@@ -17,7 +17,7 @@
 - [x] Sortie terminal `kubectl-get-all.txt` — pods Running
 - [ ] `kubectl-get-all.png` — capture écran optionnelle (même contenu que le .txt)
 - [x] `k8s-cv.png` — application sur Minikube (NodePort / minikube service)
-- [ ] `github-actions-projet.png` — onglet Actions, `Projet — CI CV Webapp` + `Projet — CD Render` verts
+- [x] `github_action.png` — onglet Actions (workflows Projet)
 - [ ] `docker-hub.png` — page repository Docker Hub avec tag `latest`
 - [x] `render.png` — dashboard Render (deploy live)
 
